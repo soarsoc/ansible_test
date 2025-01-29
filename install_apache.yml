@@ -2,60 +2,16 @@
 - hosts: all
   become: true
   tasks:
-
-  - name: update repository index
+    
+  - name: Install apache and php packages
     apt:
+      name:
+        - "{{apache_package}}"
+        - "{{php_package}}"
+      state: latest
       update_cache: yes
-    when: ansible_distribution == "Ubuntu"
-
-  - name: Install Apache2 Server
-    apt:
-      name: apache2
-      state: latest
-    when: ansible_distribution == "Ubuntu"
-
-
-  - name: Add php support for apache2
-    apt:
-      name: libapache2-mod-php
-      state: latest
-    when: ansible_distribution == "Ubuntu"
 
 
 
-  - name: update repository index on CentOS and RHEL8
-    dnf:
-      update_cache: yes
-    when: ansible_distribution == "CentOS"
-
-  - name: Install Apache2 Server on CentOS and RHEL8
-    dnf:
-      name: httpd
-      state: latest
-    when: ansible_distribution == "CentOS"
 
 
-  - name: Add php support for apache2 for CentOS and RHEL8
-    dnf:
-      name: php
-      state: latest
-    when: ansible_distribution == "CentOS"
-
-
-  - name: update repository on RHEL8
-    yum:
-      update_cache: yes
-    when: ansible_distribution == "RedHat"
-
-  - name: Install Apache2 Server on RHEL8
-    yum:
-      name: httpd
-      state: latest
-    when: ansible_distribution == "RedHat"
-
-
-  - name: Add php support for apache2 for RHEL8
-    yum:
-      name: php
-      state: latest
-    when: ansible_distribution == "RedHat"
