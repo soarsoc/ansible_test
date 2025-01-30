@@ -2,16 +2,32 @@
 - hosts: all
   become: true
   tasks:
-    
-  - name: Install apache and php packages
+ 
+  - name: install apache and php for Ubuntu servers
+    tags: ubuntu
     apt:
       name:
-        - "{{apache_package}}"
-        - "{{php_package}}"
+        - apache2
+        - libapache2-mod-php
+        - mariadb-server
       state: latest
       update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+   
 
-
-
-
+  - name: install apache and php for CentOS servers
+    tags: centos
+    dnf:
+      name:
+        - httpd
+        - php
+        - mariadb-server
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+ 
+  - name: Install samba
+    package: 
+      name: samba
+      state: latest
 
