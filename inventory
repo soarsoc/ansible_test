@@ -1,3 +1,4 @@
-192.168.20.9 ansible_user=slave1 
-192.168.20.10 ansible_user=slave2 
-192.168.20.21 ansible_user=slave5 
+192.168.20.23 ansible_user=slave1  
+192.168.20.24 ansible_user=slave2 
+192.168.20.25 ansible_user=slave3 
+192.168.20.26 ansible_user=slave4 

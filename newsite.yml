@@ -1,0 +1,43 @@
+---
+- name: Manage system updates and configure Simone user
+  hosts: all
+  become: true
+  vars:
+    ansible_become_pass: root
+
+  pre_tasks:
+    - name: Install updates (CentOS)
+      dnf:
+        update_only: yes
+        update_cache: yes
+      when: ansible_distribution == "CentOS"
+      tags: always
+
+    - name: Install updates (Ubuntu)
+      apt:
+        upgrade: dist
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+      tags: always
+
+  tasks:
+    - name: Create Simone user
+      user:
+        name: simone
+        groups: root
+      tags: always
+
+    - name: Add SSH key to Simone
+      ansible.posix.authorized_key:
+        user: simone
+        key: "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBPJB3odsa5f7KqMoCtxTkwAgwvIcQ1MCSnBody/zWjzJekDngWFDefRY0cJr6OIuuBahQna7OysYFGQe0yhRdcs= ansible"
+      tags: always
+
+    - name: Add the user Simone to sudoers group
+      copy:
+        src: sudoer_simone
+        dest: /etc/sudoers.d/simone
+        owner: root
+        group: root
+        mode: '0440'
+      tags: always
