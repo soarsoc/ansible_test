@@ -1,4 +1,16 @@
-192.168.20.23 ansible_user=slave1  
-192.168.20.24 ansible_user=slave2 
-192.168.20.25 ansible_user=slave3 
-192.168.20.26 ansible_user=slave4 
+
+[base]
+192.168.20.23 ansible_user=slave1
+192.168.20.24 ansible_user=slave2
+192.168.20.25 ansible_user=slave3
+192.168.20.26 ansible_user=slave4
+[web_servers]
+192.168.20.23 ansible_user=slave1
+[worksations]
+192.168.20.24 ansible_user=slave2
+[file_servers]
+192.168.20.25 ansible_user=slave3
+[db_servers]
+192.168.20.26 ansible_user=slave4
+
+

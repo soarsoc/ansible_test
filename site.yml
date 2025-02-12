@@ -1,48 +1,44 @@
 ---
+ 
 - hosts: all
   become: true
-  vars:
-    ansible_become_pass: root
   pre_tasks:
  
-  - name: install updates (CentOS)
+  - name: update repository index (CentOS)
     tags: always
     dnf:
-      update_only: yes
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "CentOS"
  
-  - name: install updates (Ubuntu)
+  - name: update repository index (Ubuntu)
     tags: always
     apt:
-      upgrade: dist
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Ubuntu"
-
-
+ 
 - hosts: all
   become: true
-  tasks: 
-
-  - name: Create Simone user
-    tags: always
-    user:
-      name: simone
-      groups: root
-
-
-  - name: Add ssh key to simone
-    tags: always
-    ansible.posix.authorized_key: 
-      user: simone
-      key: "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBPJB3odsa5f7KqMoCtxTkwAgwvIcQ1MCSnBody/zWjzJekDngWFDefRY0cJr6OIuuBahQna7OysYFGQe0yhRdcs= ansible"
-   
-  - name: Add the user simone to sudoer group
-    tags: always
-    copy:
-      src: sudoer_simone
-      dest: /etc/sudoers.d/simone
-      owner: root
-      group: root
-      mode: 0440
-
+  roles:
+    - base
+    
+- hosts: workstations
+  become: true
+  roles:
+    - workstations
+ 
+- hosts: web_servers
+  become: true
+  roles:
+    - web_servers
+ 
+- hosts: db_servers
+  become: true
+  roles:
+    - db_servers
+ 
+- hosts: file_servers
+  become: true
+  roles:
+    - file_servers
